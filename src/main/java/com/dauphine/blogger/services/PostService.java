@@ -3,6 +3,8 @@ package com.dauphine.blogger.services;
 import java.util.List;
 import java.util.UUID;
 
+import com.dauphine.blogger.models.Post;
+
 public interface PostService {
 List<Post> getALLByCategoryId(UUID categoryID);
 List<Post> getALL();
