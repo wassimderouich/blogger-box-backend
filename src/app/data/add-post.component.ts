@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CategoryService } from '../data/category.service';
 import { PostService } from '../data/post.services';
 import { PostWithoutID } from '../data/post';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import {Category} from '../data/category';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { Category } from '../data/category';
+
 @Component({
   selector: 'app-add-post',
   templateUrl: './add-post.component.html',
@@ -15,13 +17,14 @@ export class AddPostComponent implements OnInit {
   categories: Category[] = [];
 
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private categoryService: CategoryService,
     private postService: PostService
   ) {
     this.postForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(150)]],
-      category: ['', Validators.required],
+      category: ['', Validators.required], // Ensure 'category' control is properly defined
       content: ['', [Validators.required, Validators.maxLength(2500)]]
     });
   }
@@ -36,8 +39,12 @@ export class AddPostComponent implements OnInit {
     if (this.postForm.valid) {
       const newPost: PostWithoutID = this.postForm.value;
       this.postService.createPost(newPost).subscribe(response => {
-        // Handle successful post creation
+        Swal.fire('Post Submitted Successfully', '', 'success').then(() => {
+          this.router.navigate(['/']);
+        });
       });
+    } else {
+      Swal.fire('Please review your post', '', 'error');
     }
   }
 }

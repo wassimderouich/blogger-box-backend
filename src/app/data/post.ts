@@ -5,14 +5,14 @@ export interface Post {
     id: string;
     title:string;
     content: string;
-    createdDate: Date;
+    createdDate: string;
     category: Category;
     
 }
 
-export type PostWithoutID ={
+export type PostWithoutID = {
   title: string;
-  category: string;
+  category: { id: string; name: string };  // Ensure category is an object
   content: string;
 };
 
